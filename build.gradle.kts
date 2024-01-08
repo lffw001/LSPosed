@@ -26,6 +26,7 @@ plugins {
     alias(libs.plugins.lsplugin.jgit)
     alias(libs.plugins.agp.lib) apply false
     alias(libs.plugins.agp.app) apply false
+    alias(libs.plugins.nav.safeargs) apply false
 }
 
 cmaker {
@@ -48,7 +49,9 @@ cmaker {
     }
     buildTypes {
         if (it.name == "release") {
-            arguments += "-DDEBUG_SYMBOLS_PATH=${buildDir.absolutePath}/symbols"
+            arguments += "-DDEBUG_SYMBOLS_PATH=${
+                layout.buildDirectory.dir("symbols").get().asFile.absolutePath
+            }"
         }
     }
 }
@@ -63,16 +66,16 @@ val injectedPackageUid by extra(2000)
 val defaultManagerPackageName by extra("org.lsposed.manager")
 val verCode by extra(commitCount)
 val verName by extra(latestTag)
-val androidTargetSdkVersion by extra(33)
+val androidTargetSdkVersion by extra(34)
 val androidMinSdkVersion by extra(27)
-val androidBuildToolsVersion by extra("33.0.1")
-val androidCompileSdkVersion by extra(33)
-val androidCompileNdkVersion by extra("25.2.9519653")
-val androidSourceCompatibility by extra(JavaVersion.VERSION_11)
-val androidTargetCompatibility by extra(JavaVersion.VERSION_11)
+val androidBuildToolsVersion by extra("34.0.0")
+val androidCompileSdkVersion by extra(34)
+val androidCompileNdkVersion by extra("26.1.10909125")
+val androidSourceCompatibility by extra(JavaVersion.VERSION_17)
+val androidTargetCompatibility by extra(JavaVersion.VERSION_17)
 
 tasks.register("Delete", Delete::class) {
-    delete(rootProject.buildDir)
+    delete(rootProject.layout.buildDirectory)
 }
 
 subprojects {
